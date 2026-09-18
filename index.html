@@ -61,6 +61,9 @@
   .oprow{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
   .oprow .opt{margin:0;flex:1}
   .big{font-size:26px;font-weight:700;margin:4px 0}
+  .zhq{font-size:18.5px;font-weight:700;line-height:1.65;padding:10px 12px;border-left:4px solid var(--accent,#1f6feb);
+       background:var(--card,#f6f8fa);border-radius:6px;margin:6px 0}
+  tr.sp td{background:var(--card,#f6f8fa);font-weight:700;color:var(--muted-foreground,#57606a)}
 </style>
 </head>
 <body>
@@ -103,7 +106,67 @@ var ITEMS = [
   {g:"选词", n:"22", stem:"Every ___ we make will help us gain new knowledge.", stemzh:"我们付出的每一份___……", opts:["effort","positive","healthy","achieve"], a:0, hook:"every effort we make＝我们付出的每一份努力"},
   {g:"选词", n:"23", stem:"Every effort we make will help us gain new ___.", stemzh:"……会帮我们获得新的___", opts:["knowledge","skills","habits","valuable"], a:0, hook:"gain new knowledge＝获得新知识（gain 只搭 knowledge）"},
   {g:"选词", n:"24", stem:"…and improve our personal ___.", stemzh:"……并提升我们的个人___", opts:["skills","habits","improve","achieve"], a:0, hook:"personal skills＝个人技能"},
-  {g:"选词", n:"25", stem:"Keeping a ___ learning attitude is the key to self-growth.", stemzh:"保持一种___的学习态度是自我成长的关键", opts:["positive","healthy","valuable","daily"], a:0, hook:"positive learning attitude＝积极的学习态度"}
+  {g:"选词", n:"25", stem:"Keeping a ___ learning attitude is the key to self-growth.", stemzh:"保持一种___的学习态度是自我成长的关键", opts:["positive","healthy","valuable","daily"], a:0, hook:"positive learning attitude＝积极的学习态度"},
+{g:"翻译", n:"1", stem:"", stemzh:"中国传统文化源远流长、博大精深。", a:0, full:"tf-1.mp3",
+ opts:["Chinese traditional culture has a long history and is extensive and profound.",
+       "Chinese traditional culture has a long time and is big and deep.",
+       "Chinese traditional culture is old and very difficult to learn.",
+       "Chinese traditional culture has a long history and is wide and deep."],
+ hook:"源远流长＝has a long history；博大精深＝extensive and profound（本卷翻译两个必得分词组，直接背）"},
+{g:"翻译", n:"2", stem:"", stemzh:"阅读传统经典不仅能够丰富我们的知识、提升文化素养，", a:0, full:"tf-2.mp3",
+ opts:["Reading traditional classics can not only enrich our knowledge and improve our cultural literacy,",
+       "Reading traditional classics can not enrich our knowledge and improve our cultural literacy,",
+       "Reading classic books can not only enrich our knowledge and raise our culture level,",
+       "Read traditional classics can not only enrich our knowledge and improve our cultural literacy,"],
+ hook:"开头用 Reading…（动名词作主语）；not only 后接动词原形；丰富知识＝enrich our knowledge（不写 knowledge reserve）；提升文化素养＝improve our cultural literacy"},
+{g:"翻译", n:"3", stem:"", stemzh:"还能帮助我们树立正确的人生观和价值观。", a:0, full:"tf-3.mp3",
+ opts:["but also help us establish a correct outlook on life and values.",
+       "but also help us establish a correct life and values outlook.",
+       "and also helps us to build a correct outlook of life and value.",
+       "but also helping us establish correct outlooks on lives and values."],
+ hook:"与上一句配成 not only … but also …；but also 后接原形 help；树立＝establish；三观固定说法 a correct outlook on life and values（outlook 用单数）"},
+{g:"翻译", n:"4", stem:"", stemzh:"在当今快速发展的时代，传承和弘扬优秀传统文化，是每个年轻人的责任与使命，", a:0, full:"tf-4.mp3",
+ opts:["In today's rapidly developing era, inheriting and promoting excellent traditional culture is the responsibility and mission of every young person,",
+       "In today's fast developing times, inherit and promote excellent traditional culture is the responsibility of every young people,",
+       "At the era of rapid development now, to inherit and promote excellent traditional culture are every young person's duty,",
+       "In the rapidly developed era, inheriting and promoting excellent traditional culture is the responsible of every young person,"],
+ hook:"时代＝era（不用 times）；传承和弘扬＝inherit and promote；责任与使命＝the responsibility and mission；each/every + 单数 young person"},
+{g:"翻译", n:"5", stem:"", stemzh:"也能让中华文化在世界舞台上焕发新的活力。", a:0, full:"tf-5.mp3",
+ opts:["and it can also enable Chinese culture to glow with new vitality on the world stage.",
+       "and it can also make Chinese culture shine new life on the world stage.",
+       "and also let Chinese culture to give out new energy in the world.",
+       "and it can also enable Chinese culture glow with new vitality in world stage."],
+ hook:"让…焕发＝enable … to glow with new vitality（enable sb to do）；世界舞台＝on the world stage（介词用 on）"},
+{g:"写作", n:"1", stem:"", stemzh:"【作文开头第一句】点题：坚持是成功最宝贵的品质之一", a:0, full:"wf-1.mp3",
+ opts:["Persistence is one of the most precious qualities of human beings and an indispensable foundation of success.",
+       "Persistence is one of the most precious quality of human being and a indispensable base of success.",
+       "Persistence is the most precious quality of humans and an indispensable foundation for succeed.",
+       "Persistence is one of the more precious qualities of human beings and a foundation of success."],
+ hook:"开头万能句：X is one of the most ＋最高级＋复数名词＋of…；不可或缺的基础＝an indispensable foundation of success"},
+{g:"写作", n:"2", stem:"", stemzh:"【第二段开头】举例子：许多例子都证明了坚持的力量", a:0, full:"wf-2.mp3",
+ opts:["Numerous examples have proved the power of persistence.",
+       "Many examples have been proved the power of persistence.",
+       "Numerous examples are proved the power of persistence.",
+       "Numerous example has proved the power of persistence."],
+ hook:"举例段万能开头：Numerous examples have proved …（Numerous 比 Many 高级；examples 复数＋have proved 现在完成）"},
+{g:"写作", n:"3", stem:"", stemzh:"【第二段举例】以学生为例（举一类人）", a:0, full:"wf-3.mp3",
+ opts:["For students, persistent daily study helps us accumulate knowledge steadily and make progress gradually.",
+       "For students, persist daily study help us accumulate knowledge steady and make progress gradual.",
+       "As for students, persistent every day study helps us to accumulating knowledge and making progress.",
+       "For students, persistent daily study help us accumulate knowledge steadily and make progress gradually."],
+ hook:"For ＋某类人, … helps us …（主语 persistent daily study 是三单→helps）；稳步积累＝accumulate knowledge steadily；逐步进步＝make progress gradually（副词用 -ly 结尾）"},
+{g:"写作", n:"4", stem:"", stemzh:"【第三段第一条建议】如何培养坚持的品质", a:0, full:"wf-4.mp3",
+ opts:["First, we need to set clear short-term and long-term goals to guide our actions.",
+       "First, we need to set clear short time and long time goal to guide our action.",
+       "First, we need setting clear short-term and long-term goals to guide our actions.",
+       "First, we should set up clearly short-term and long-term goals for guiding our actions."],
+ hook:"建议句万能开头：First, we need to ＋动词原形；短期/长期目标＝short-term and long-term goals（形容词修饰 goals 复数）；指导行动＝guide our actions"},
+{g:"写作", n:"5", stem:"", stemzh:"【结尾点睛句】只有坚持才能实现梦想（高分倒装）", a:0, full:"wf-5.mp3",
+ opts:["Only by persisting continuously can we realize our dreams and embrace a better future.",
+       "Only by persist continuously we can realize our dreams and embrace a better future.",
+       "Only we persist continuously can realize our dreams and embrace a better future.",
+       "By only persisting continuously can we realize our dreams and embrace better future."],
+ hook:"结尾加分句：Only by ＋动名词 … can we …（Only 置于句首要部分倒装，背下来直接往作文里放）"}
 ];
 
 
@@ -116,8 +179,12 @@ var MODULES = [
   {id:"听力A", label:"① 听力 Section A · 短对话", short:"听力A", n:10, pts:10},
   {id:"听力B", label:"② 听力 Section B · 短文",   short:"听力B", n:5,  pts:10},
   {id:"阅读",  label:"③ 阅读 Section A · 仔细阅读", short:"阅读",  n:5,  pts:20},
-  {id:"选词",  label:"④ 阅读 Section B · 选词填空", short:"选词",  n:5,  pts:10}
+  {id:"选词",  label:"④ 阅读 Section B · 选词填空", short:"选词",  n:5,  pts:10},
+  {id:"翻译",  label:"⑤ 翻译 · 中译英（25 分）",   short:"翻译",  n:5,  pts:25},
+  {id:"写作",  label:"⑥ 写作 · 范文句（25 分）",   short:"写作",  n:5,  pts:25}
 ];
+var KEYS = ["听力A","听力B","阅读","选词"];   // 客观题 50 分
+var SUBJ = ["翻译","写作"];                    // 主观题 50 分
 var OK_LETTER = {0:"A",1:"B",2:"C",3:"D"};
 
 var state = { mode:"hook", shuffle:false, mi:0, round:0, log:{}, best:{} };
@@ -169,7 +236,7 @@ function strip(){
     if (b) cls += " done";
     h += "<span class='" + cls + "'>" + m.short + (b ? " ✅" + b.right + "/" + b.n : "") + "</span>";
   }
-  h += "<span class='chip'>共 50 分</span></div>";
+  h += "<span class='chip'>共 100 分</span></div>";
   return h;
 }
 
@@ -193,6 +260,9 @@ function render(){
     var sf = (it.g === "阅读") ? ("q" + it.n + ".mp3") : ("sc-" + it.n + ".mp3");
     h += "<div class='stem'>" + it.stem + "</div><div class='stemzh'>" + it.stemzh + "</div>";
     h += "<div class='playbar'><button data-a='" + sf + "' data-t=\"" + it.stem + "\">▶ 听题干</button></div>";
+  } else if (it.stemzh){
+    h += "<div class='stemzh zhq'>" + it.stemzh + "</div>";
+    h += "<div class='sub'>（中文题：在下面四个英文句子里选出正确的那个）</div>";
   } else {
     h += "<div class='stemzh'>（听力题：只有选项，凭选项认答案）</div>";
   }
@@ -266,6 +336,7 @@ function showFb(ok, it, pick, ms, replay){
   if (ok) fb.innerHTML = "<b>对了，" + t + "。</b>" + (replay ? "（这是你刚才的选择）" : "") + "<br>钩子：" + it.hook;
   else fb.innerHTML = "<b>" + (pick < 0 ? "超时" : "选错了") + "，用时 " + t + "。</b>正确答案是 <span class='en'>" + it.opts[it.a] +
     "</span><br>钩子：" + it.hook + "<br><span class='sub'>把钩子那句话读三遍，再点 ▶ 听一遍。</span>";
+  if (it.full) fb.innerHTML += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.opts[it.a] + "\">▶ 听这句完整英文（慢速）</button></div>";
   var el = document.getElementById("hkbox"); if (el) el.className = "hidden";
   if (!replay){ var hk = document.querySelector(".hook"); if (hk) hk.className = "hidden"; }
 }
@@ -320,24 +391,28 @@ function moduleReport(){
 function finalSummary(){
   document.getElementById("bar").style.width = "100%";
   var totalPts = 0, totRight = 0, totN = 0, lines = [];
+  var kePts = 0, zhuPts = 0;
   for (var i=0;i<MODULES.length;i++){
     var m = MODULES[i], b = state.best[m.id];
     var r = b ? b.right : 0, n = b ? b.n : 0;
     var pts = n ? (r/n*m.pts) : 0;
     totalPts += pts; totRight += r; totN += n;
+    if (KEYS.indexOf(m.id) >= 0) kePts += pts; else zhuPts += pts;
     lines.push({m:m, r:r, n:n, pts:pts});
   }
   var dn = document.getElementById("done");
   dn.className = "";
-  var h = "<div class='card'><b>四个模块总结（按每模块最好成绩）</b><table>" +
+  var h = "<div class='card'><b>六个模块总结（按每模块最好成绩折算）</b><table>" +
           "<tr><th>模块</th><th>最好成绩</th><th>折算分</th></tr>";
   for (var k=0;k<lines.length;k++){
-    h += "<tr><td>" + lines[k].m.label + "</td><td>" + lines[k].r + " / " + lines[k].n + "</td><td>" +
+    var sep = (lines[k].m.id === "翻译") ? "<tr class='sp'><td colspan='3'>主观题（背成品）</td></tr>" : "";
+    h += sep + "<tr><td>" + lines[k].m.label + "</td><td>" + lines[k].r + " / " + lines[k].n + "</td><td>" +
          lines[k].pts.toFixed(1) + " / " + lines[k].m.pts + "</td></tr>";
   }
-  h += "<tr><td><b>客观题合计</b></td><td><b>" + totRight + " / " + totN + "</b></td><td><b>" + totalPts.toFixed(1) +
-       " / 50</b></td></tr></table>" +
-       "<div class='sub'>翻译 25 分 + 写作 25 分是主观题，要靠背成品（下一课的内容）。</div></div>";
+  h += "<tr><td><b>客观题小计</b></td><td><b>" + totRight + " 题对</b></td><td><b>" + kePts.toFixed(1) + " / 50</b></td></tr>" +
+       "<tr><td><b>主观题小计（翻译+写作）</b></td><td>—</td><td><b>" + zhuPts.toFixed(1) + " / 50</b></td></tr>" +
+       "<tr><td><b>全卷合计</b></td><td>—</td><td><b>" + totalPts.toFixed(1) + " / 100</b></td></tr></table>" +
+       "<div class='sub'>翻译和写作在真实考试里是手写主观题，这里用「中→英选句」的方式练到「看一眼就知道写哪句」。</div></div>";
   h += "<div class='card'><b>下一步</b><div class='nav'>" +
        "<button class='primary' id='restart'>从「听力A」重新开始</button>" +
        "<button class='ghost' id='pick'>换模块</button></div></div>";
@@ -345,7 +420,7 @@ function finalSummary(){
   dn.innerHTML = h;
   var txt = "【秒选训练场·模块版】";
   for (var q=0;q<lines.length;q++) txt += lines[q].m.short + " " + lines[q].r + "/" + lines[q].n + "｜";
-  txt += "客观题折算 " + totalPts.toFixed(1) + "/50";
+  txt += "客观 " + kePts.toFixed(1) + "/50｜主观 " + zhuPts.toFixed(1) + "/50｜全卷 " + totalPts.toFixed(1) + "/100";
   document.getElementById("payload").value = txt;
   document.getElementById("payload").onclick = function(){ this.select(); };
   document.getElementById("restart").onclick = function(){ state.mi = 0; save(); startModuleRound(); };
@@ -357,11 +432,13 @@ function finalSummary(){
 function intro(){
   document.getElementById("done").className = "hidden";
   var h = strip();
-  h += "<div class='card anchor'><span class='tag'>怎么练（分模块版）</span><div>" +
-       "四个模块分开做，<b>一个模块满意了再进下一个</b>：<br>" +
+  h += "<div class='card anchor'><span class='tag'>怎么练（分模块版 · 六个模块）</span><div>" +
+       "六个模块分开做，<b>一个模块满意了再进下一个</b>：<br>" +
        "① 每题 <b>8 秒</b>（背死档），带「钩子」提示；② 做完一个模块出小结算；" +
        "③ 不满意就点「▶ 本模块再来一次」，记录清空重新计时，练到你满意为止；④ 满意了点「下一个模块」。<br>" +
-       "⑤ 怕自己是在<b>背位置</b>（看到第 2 个就点）？点顶部「<b>选项乱序：关</b>」变成「选项乱序：开 ✅」——四个选项的位置每次随机打乱，" +
+       "⑤ <b>翻译</b>和<b>写作</b>是主观题（各 25 分）：<b>看着中文，选出对应的英文成品句</b>——" +
+       "这两块的英文句子是<b>要能默写出来</b>的，所以每次答完都点「▶ 听这句完整英文（慢速）」跟读一遍。<br>" +
+       "⑥ 怕自己是在<b>背位置</b>（看到第 2 个就点）？点顶部「<b>选项乱序：关</b>」变成「选项乱序：开 ✅」——四个选项的位置每次随机打乱，" +
        "但<b>字母仍然是考试原答案的字母</b>（比如第 4 题还是 B) 8:30），所以乱序练出来的答案，考试时照样能用。</div></div>";
   h += "<div class='card'><b>选一个模块开始</b><table><tr><th>模块</th><th>题数/分值</th><th>最好成绩</th></tr>";
   for (var i=0;i<MODULES.length;i++){
