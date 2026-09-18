@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>英语卷·秒选训练场（分模块版）</title>
+<style>
+  body{background:var(--background, transparent);color:var(--foreground, #1f2328);font-family:inherit;margin:0;padding:14px 16px 34px;font-size:15px;line-height:1.7}
+  h1{font-size:18px;margin:0 0 4px}
+  .sub{color:var(--muted-foreground, #57606a);font-size:13px;margin-bottom:10px}
+  .bar{height:6px;background:var(--border, #d0d7de);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent, #1f6feb);transition:width .3s}
+  .tbar{height:8px;background:var(--border, #d0d7de);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+  .tbar>i{display:block;height:100%;width:100%;background:#4b9cff;transition:width .1s linear}
+  .tbar>i.warn{background:#d24b4b}
+  .card{border:1px solid var(--border, #d0d7de);background:var(--card, #ffffff);border-radius:12px;padding:12px 14px;margin-bottom:13px}
+  .card.anchor{border-left:4px solid var(--accent, #1f6feb)}
+  .tag{display:inline-block;font-size:12px;color:var(--accent, #1f6feb);border:1px solid var(--accent, #1f6feb);border-radius:99px;padding:1px 8px;margin-bottom:7px}
+  .stem{font-family:Georgia,serif;font-size:15.5px;font-weight:600;margin:6px 0 3px}
+  .stemzh{color:var(--muted-foreground, #57606a);font-size:13px;margin-bottom:6px}
+  .opt{display:block;width:100%;text-align:left;margin:7px 0;padding:10px 12px;border:1px solid var(--border, #d0d7de);
+       background:transparent;color:var(--foreground, #1f2328);border-radius:10px;font:inherit;font-size:15px;cursor:pointer}
+  .opt:hover{border-color:var(--accent, #1f6feb)}
+  .opt.ok{border-color:#1a9c5b;background:rgba(26,156,91,.14)}
+  .opt.bad{border-color:#d24b4b;background:rgba(210,75,75,.14)}
+  .opt .en{font-family:Georgia,serif}
+  .fb{border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px;display:none}
+  .fb.show{display:block}
+  .fb.good{border:1px solid #1a9c5b;background:rgba(26,156,91,.10)}
+  .fb.bad{border:1px solid #d24b4b;background:rgba(210,75,75,.10)}
+  .nav{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  button.primary{padding:9px 18px;border-radius:10px;border:1px solid var(--accent, #1f6feb);background:var(--accent, #1f6feb);
+       color:var(--card, #ffffff);font:inherit;font-weight:600;cursor:pointer}
+  button.primary[disabled]{opacity:.4;cursor:not-allowed}
+  button.ghost{padding:9px 15px;border-radius:10px;border:1px solid var(--border, #d0d7de);background:transparent;
+       color:var(--foreground, #1f2328);font:inherit;font-size:14px;cursor:pointer}
+  button.ghost:hover{border-color:var(--accent, #1f6feb);color:var(--accent, #1f6feb)}
+  button.play{border:1px solid var(--border, #d0d7de);background:transparent;color:var(--accent, #1f6feb);border-radius:8px;
+       padding:1px 7px;margin-right:7px;font:inherit;font-size:12.5px;cursor:pointer;line-height:1.5}
+  button.play:hover{border-color:var(--accent, #1f6feb)}
+  .playbar button{border:1px solid var(--accent, #1f6feb);color:var(--accent, #1f6feb);background:transparent;border-radius:10px;
+       padding:6px 13px;font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
+  .topbar{display:flex;gap:10px;align-items:center;margin:0 0 12px;flex-wrap:wrap}
+  .topbar .playbar-btn{border:1px solid var(--accent, #1f6feb);color:var(--accent, #1f6feb);background:transparent;border-radius:10px;
+       padding:8px 14px;font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
+  .score{font-size:13px;color:var(--muted-foreground, #57606a);margin-left:auto}
+  .hook{border:1px dashed var(--accent, #1f6feb);border-radius:10px;padding:8px 11px;margin:8px 0;font-size:14px}
+  .hidden{display:none}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+  th,td{border:1px solid var(--border, #d0d7de);padding:5px 7px;text-align:left}
+  .big{font-size:26px;font-weight:700}
+  .mid{font-size:16px}
+  textarea{width:100%;box-sizing:border-box;min-height:80px;margin-top:10px;border:1px solid var(--border, #d0d7de);
+       border-radius:10px;background:transparent;color:var(--foreground, #1f2328);font:inherit;font-size:13px;padding:9px}
+  .switch{display:flex;gap:14px;align-items:center;font-size:14px;margin:8px 0}
+  .switch label{cursor:pointer}
+
+  .strip{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+  .chip{font-size:12.5px;border:1px solid var(--border,#d0d7de);border-radius:99px;padding:2px 10px;color:var(--muted-foreground,#57606a)}
+  .chip.cur{border-color:var(--accent,#1f6feb);color:var(--accent,#1f6feb);font-weight:700}
+  .chip.done{border-color:#1a9c5b;color:#1a9c5b}
+  .oprow{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
+  .oprow .opt{margin:0;flex:1}
+  .big{font-size:26px;font-weight:700;margin:4px 0}
+</style>
+</head>
+<body>
+<h1>英语卷·秒选训练场（分模块版）</h1>
+<div class="sub">四个模块分开做：听力A → 听力B → 阅读 → 选词。一个模块练到满意，再进下一个。</div>
+<div class="bar"><i id="bar"></i></div>
+<div id="boot" class="card" style="border:1px dashed var(--accent,#1f6feb)">
+  <b>正在加载题目…</b><br>
+  如果这段字超过 3 秒还在、下面没有出现题目，说明页面脚本没跑起来 —— 把这句告诉小助手，我马上换方式给你。
+</div>
+<div id="app"></div>
+<div id="done" class="hidden"></div>
+<script>
+var ITEMS = [
+  // ---- 听力 Section A（10 题）----
+  {g:"听力A", n:"1", opts:["The man should study harder.","The man can take a rest.","The exam is very difficult.","She will help the man study."], a:1, hook:"看到 take a rest（休息一下）就选 —— 男人可以休息"},
+  {g:"听力A", n:"2", opts:["At a library.","At a restaurant.","At a supermarket.","At a bookstore."], a:1, hook:"restaurant（餐厅）—— 这组里只有它跟吃饭有关"},
+  {g:"听力A", n:"3", opts:["He dislikes traveling.","He has no time for a trip.","He will go on a trip alone.","He agrees to travel with the woman."], a:3, hook:"agrees（同意）+ with the woman（跟她一起）＝一起旅行"},
+  {g:"听力A", n:"4", opts:["8:00.","8:30.","9:00.","9:30."], a:1, hook:"答案是 8:30（唯一带 30 的）"},
+  {g:"听力A", n:"5", opts:["She lost her new bag.","She bought a new bag.","Her bag was stolen.","She found her missing bag."], a:0, hook:"lost（丢了）她的 new bag（新包）—— 注意不是 stolen（被偷）"},
+  {g:"听力A", n:"6", opts:["Watch a movie.","Do homework.","Go shopping.","Visit a friend."], a:1, hook:"homework（作业）—— 学习类的那一个"},
+  {g:"听力A", n:"7", opts:["The weather is cold.","It will rain soon.","The sun is bright.","The wind is strong."], a:1, hook:"rain（要下雨）—— 带 will 的那个"},
+  {g:"听力A", n:"8", opts:["He is very busy.","He is ill.","He is late for work.","He quit his job."], a:0, hook:"busy（很忙）—— 不是 ill（生病）"},
+  {g:"听力A", n:"9", opts:["She likes classical music.","She dislikes pop music.","She will attend the concert.","She has no interest in the concert."], a:2, hook:"attend the concert（去听音乐会）—— 唯一“会去”的那个"},
+  {g:"听力A", n:"10", opts:["The course is easy.","The course is useful.","The teacher is strict.","The class is too crowded."], a:1, hook:"useful（有用）—— 不是 easy（简单）"},
+  // ---- 听力 Section B（5 题）----
+  {g:"听力B", n:"11", opts:["How to learn English well.","The importance of reading.","Ways to relieve study pressure.","How to make friends at college."], a:1, hook:"全文主题＝阅读的重要性（importance of reading）"},
+  {g:"听力B", n:"12", opts:["Reading every day.","Taking more exams.","Memorizing words only.","Studying with teachers all the time."], a:0, hook:"every day（每天）—— 带频率的那个"},
+  {g:"听力B", n:"13", opts:["It improves writing skills.","It helps save time.","It makes people relaxed.","It helps get high scores directly."], a:0, hook:"improves writing skills（提高写作）—— 不是直接提分"},
+  {g:"听力B", n:"14", opts:["One hour.","Two hours.","Half an hour.","Three hours."], a:2, hook:"half an hour（半小时）—— 唯一带 half 的"},
+  {g:"听力B", n:"15", opts:["Persistence.","Talent.","Good luck.","High intelligence."], a:0, hook:"persistence（坚持）—— 全篇中心词，作文题也是它"},
+  // ---- 阅读 Section A（5 题）----
+  {g:"阅读", n:"16", stem:"What is the main idea of the first paragraph?", stemzh:"第一段主旨是什么？", opts:["The differences between college and high school study.","The importance and characteristics of college life.","How to adapt to college life quickly.","The challenges of college study."], a:1, hook:"importance and characteristics（重要性+特点）—— 首句 important 就是信号"},
+  {g:"阅读", n:"17", stem:"What benefit can campus activities bring to students?", stemzh:"校园活动给学生带来什么好处？", opts:["Helping them get higher exam scores.","Replacing textbook learning.","Improving communication and social skills.","Saving their study time."], a:2, hook:"communication and social skills（沟通与社交）—— 对应原文 exercise communication skills"},
+  {g:"阅读", n:"18", stem:"What problem do some college students have?", stemzh:"一些大学生有什么问题？", opts:["They have too many campus activities.","They lack self-discipline and clear goals.","Their study tasks are too heavy.","They cannot make friends with others."], a:1, hook:"lack self-discipline and clear goals（缺自律+缺目标）—— 原文两句各对应一半"},
+  {g:"阅读", n:"19", stem:"Which of the following is true according to the passage?", stemzh:"根据文章，下列哪项正确？", opts:["Teachers arrange all college study tasks.","Textbooks can teach students all social skills.","Balancing study and leisure is important for college students.","College life has no challenges for most students."], a:2, hook:"balancing study and leisure（平衡学习与休闲）—— 另外三个都含绝对词 all / no"},
+  {g:"阅读", n:"20", stem:"What is the author\u2019s attitude towards college life?", stemzh:"作者对大学生活的态度？", opts:["Negative.","Critical.","Objective.","Doubtful."], a:2, hook:"objective（客观）—— 又说好又说坏，答案就是它"},
+  // ---- 选词填空（5 空）----
+  {g:"选词", n:"21", stem:"In our ___ life, we can learn knowledge not only from school but also from society.", stemzh:"在我们的___生活中……", opts:["daily","valuable","healthy","habits"], a:0, hook:"daily life＝日常生活（固定搭配）"},
+  {g:"选词", n:"22", stem:"Every ___ we make will help us gain new knowledge.", stemzh:"我们付出的每一份___……", opts:["effort","positive","healthy","achieve"], a:0, hook:"every effort we make＝我们付出的每一份努力"},
+  {g:"选词", n:"23", stem:"Every effort we make will help us gain new ___.", stemzh:"……会帮我们获得新的___", opts:["knowledge","skills","habits","valuable"], a:0, hook:"gain new knowledge＝获得新知识（gain 只搭 knowledge）"},
+  {g:"选词", n:"24", stem:"…and improve our personal ___.", stemzh:"……并提升我们的个人___", opts:["skills","habits","improve","achieve"], a:0, hook:"personal skills＝个人技能"},
+  {g:"选词", n:"25", stem:"Keeping a ___ learning attitude is the key to self-growth.", stemzh:"保持一种___的学习态度是自我成长的关键", opts:["positive","healthy","valuable","daily"], a:0, hook:"positive learning attitude＝积极的学习态度"}
+];
+
+
+var A_BASE = "https://cdn.jsdelivr.net/gh/Leopold928/eng@main/eng-audio/";
+var KEY = "eng-drill-modules-v1-web";
+var WID = "sd";
+
+/* ============ 四个模块 ============ */
+var MODULES = [
+  {id:"听力A", label:"① 听力 Section A · 短对话", short:"听力A", n:10, pts:10},
+  {id:"听力B", label:"② 听力 Section B · 短文",   short:"听力B", n:5,  pts:10},
+  {id:"阅读",  label:"③ 阅读 Section A · 仔细阅读", short:"阅读",  n:5,  pts:20},
+  {id:"选词",  label:"④ 阅读 Section B · 选词填空", short:"选词",  n:5,  pts:10}
+];
+var OK_LETTER = {0:"A",1:"B",2:"C",3:"D"};
+
+var state = { mode:"hook", shuffle:false, mi:0, round:0, log:{}, best:{} };
+var order = [], cur = 0, timer = null, tleft = 0, started = 0, locked = false;
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+function load(){ try{ var r=localStorage.getItem(KEY); if(r){ var s=JSON.parse(r); if(s && s.best){ state.best=s.best||{}; state.mode=s.mode||"hook"; state.mi=s.mi||0; state.shuffle=!!s.shuffle; } } }catch(e){} }
+function toTop(){ try{ window.scrollTo(0,0); }catch(e){} }
+function hasEng(s){ return /[A-Za-z]{2}/.test(String(s).replace(/<[^>]*>/g, " ")); }
+
+/* ---------- 发音 ---------- */
+var curA = null;
+function speak(txt){ try{ if(!txt) return; var u=new SpeechSynthesisUtterance(txt); u.lang="en-GB"; u.rate=0.8; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){} }
+function stopAudio(){ try{ if(curA) curA.pause(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} }
+function playFile(f, txt){ stopAudio(); try{ curA = new Audio(A_BASE+f); var used=false; curA.onerror=function(){ if(!used){used=true; speak(txt);} }; curA.play().catch(function(){ if(!used){used=true; speak(txt);} }); }catch(e){ speak(txt); } }
+document.addEventListener("click", function(ev){
+  var el = ev.target && ev.target.closest ? ev.target.closest("[data-a]") : null;
+  if (!el) return;
+  playFile(el.getAttribute("data-a"), el.getAttribute("data-t") || "");
+});
+
+/* ---------- 模块与轮次 ---------- */
+function moduleItems(id){
+  var a = [];
+  for (var i=0;i<ITEMS.length;i++) if (ITEMS[i].g === id) a.push(i);
+  return a;
+}
+function startModuleRound(){
+  state.log = {};                          // 新一轮：清空上一轮所有记录
+  state.round = (state.round || 0) + 1;
+  order = moduleItems(MODULES[state.mi].id);
+  cur = 0;
+  save(); render(); toTop();
+}
+function gotoModule(i){ if (i >= 0 && i < MODULES.length){ state.mi = i; save(); startModuleRound(); } }
+function nextModule(){
+  if (state.mi < MODULES.length - 1){ state.mi++; startModuleRound(); }
+  else { finalSummary(); }
+}
+function shuffleIdx(n){ var a=[]; for(var i=0;i<n;i++) a.push(i); for(var j=n-1;j>0;j--){ var k=Math.floor(Math.random()*(j+1)); var t=a[j]; a[j]=a[k]; a[k]=t; } return a; }
+function goBack(){ if (cur > 0){ cur--; render(); } }
+
+/* ---------- 顶部模块条 ---------- */
+function strip(){
+  var h = "<div class='strip'>";
+  for (var i=0;i<MODULES.length;i++){
+    var m = MODULES[i], b = state.best[m.id];
+    var cls = (i === state.mi) ? "chip cur" : "chip";
+    if (b) cls += " done";
+    h += "<span class='" + cls + "'>" + m.short + (b ? " ✅" + b.right + "/" + b.n : "") + "</span>";
+  }
+  h += "<span class='chip'>共 50 分</span></div>";
+  return h;
+}
+
+/* ---------- 题目 ---------- */
+function render(){
+  var bt = document.getElementById("boot"); if (bt) bt.className = "hidden";
+  var dn = document.getElementById("done"); if (dn) dn.className = "hidden";
+  document.getElementById("bar").style.width = Math.round(cur/order.length*100) + "%";
+  if (cur >= order.length) return moduleReport();
+  var qi = order[cur], it = ITEMS[qi], m = MODULES[state.mi];
+  var rec = state.log[qi];
+  var h = strip();
+
+  h += "<div class='topbar'>" + (cur>0 ? "<button class='ghost' id='back'>← 上一步</button>" : "") +
+       "<button class='ghost' id='help'>怎么练 / 换模块</button>" +
+       "<button class='ghost' id='shuf' title='选项位置随机打乱，字母仍是考试原答案字母'>选项乱序：" + (state.shuffle ? "开 ✅" : "关") + "</button>" +
+       "<span class='score'>" + m.label + "　第 " + (cur+1) + " / " + order.length + " 题　｜　本轮第 " + state.round + " 轮</span></div>";
+
+  h += "<div class='card'><span class='tag'>" + it.g + " 第 " + it.n + " 题</span>";
+  if (it.stem){
+    var sf = (it.g === "阅读") ? ("q" + it.n + ".mp3") : ("sc-" + it.n + ".mp3");
+    h += "<div class='stem'>" + it.stem + "</div><div class='stemzh'>" + it.stemzh + "</div>";
+    h += "<div class='playbar'><button data-a='" + sf + "' data-t=\"" + it.stem + "\">▶ 听题干</button></div>";
+  } else {
+    h += "<div class='stemzh'>（听力题：只有选项，凭选项认答案）</div>";
+  }
+  h += "<div class='tbar'><i id='tb'></i></div>";
+
+  var idxs = state.shuffle ? shuffleIdx(it.opts.length) : [0,1,2,3];
+  for (var k=0;k<idxs.length;k++){
+    var o = idxs[k], cls = "opt" + (rec && rec.pick === o ? (rec.ok ? " ok" : " bad") : "");
+    h += "<div class='oprow'><button class='play' data-a='" + WID + "-" + qi + "-" + o + ".mp3' data-t=\"" + it.opts[o] + "\">▶</button>" +
+         "<button class='" + cls + "' data-o='" + o + "'><span class='en'>" + OK_LETTER[o] + ") " + it.opts[o] + "</span></button></div>";
+  }
+  if (state.mode === "hook" || rec) h += "<div class='hook'><b>钩子：</b>" + it.hook + "</div>";
+  h += "<div class='fb' id='fb'></div>";
+  h += "<div class='nav'><button class='primary' id='next'" + (rec ? "" : " disabled") + ">下一题 →</button>" +
+       ((state.mode !== "hook" && !rec) ? "<button class='ghost' id='showhook'>看钩子提示</button>" : "") + "</div></div>";
+  document.getElementById("app").innerHTML = h;
+
+  var bs = document.querySelectorAll(".opt");
+  for (var b=0;b<bs.length;b++) bs[b].onclick = function(){ pick(this, it, qi); };
+  var nx = document.getElementById("next"); if (nx) nx.onclick = function(){ cur++; render(); };
+  var hb = document.getElementById("help"); if (hb) hb.onclick = function(){ intro(); };
+  var sb = document.getElementById("shuf");
+  if (sb) sb.onclick = function(){ state.shuffle = !state.shuffle; save(); render(); };
+  var sh = document.getElementById("showhook");
+  if (sh) sh.onclick = function(){
+    var d = document.getElementById("hkbox");
+    if (d) { d.className = "hook"; }
+    else { d = document.createElement("div"); d.className = "hook"; d.id = "hkbox"; d.innerHTML = "<b>钩子：</b>" + it.hook; this.parentNode.parentNode.insertBefore(d, this.parentNode.parentNode.lastChild); }
+  };
+  if (rec) showFb(rec.ok, it, rec.pick, rec.ms, true);
+  else startTimer(it, qi);
+}
+
+function startTimer(it, qi){
+  locked = false;
+  var total = (state.mode === "hook") ? 8000 : 5000;
+  tleft = total; started = Date.now();
+  var tb = document.getElementById("tb");
+  clearInterval(timer);
+  timer = setInterval(function(){
+    tleft -= 100;
+    var pct = Math.max(0, tleft/total*100);
+    if (tb){ tb.style.width = pct + "%"; tb.className = (pct < 35) ? "warn" : ""; }
+    if (tleft <= 0){ clearInterval(timer); if (!locked){ locked = true; timeout(it, qi); } }
+  }, 100);
+}
+function timeout(it, qi){
+  var fb = document.getElementById("fb");
+  fb.className = "fb bad show";
+  fb.innerHTML = "<b>超时了。</b>正确答案：<span class='en'>" + it.opts[it.a] + "</span><br>" + it.hook;
+  state.log[qi] = {pick:-1, ok:false, ms:(state.mode==="hook"?8000:5000), timeout:true};
+  save();
+  var nx = document.getElementById("next"); if (nx) nx.disabled = false;
+}
+function pick(btn, it, qi){
+  if (locked) return;
+  locked = true;
+  clearInterval(timer);
+  var o = parseInt(btn.getAttribute("data-o"),10), ms = Date.now() - started;
+  var ok = (o === it.a);
+  state.log[qi] = {pick:o, ok:ok, ms:ms};
+  save();
+  btn.className = "opt " + (ok ? "ok" : "bad");
+  showFb(ok, it, o, ms, false);
+  var nx = document.getElementById("next"); if (nx) nx.disabled = false;
+}
+function showFb(ok, it, pick, ms, replay){
+  var fb = document.getElementById("fb");
+  fb.className = "fb " + (ok ? "good" : "bad") + " show";
+  var t = (ms/1000).toFixed(1) + " 秒";
+  if (ok) fb.innerHTML = "<b>对了，" + t + "。</b>" + (replay ? "（这是你刚才的选择）" : "") + "<br>钩子：" + it.hook;
+  else fb.innerHTML = "<b>" + (pick < 0 ? "超时" : "选错了") + "，用时 " + t + "。</b>正确答案是 <span class='en'>" + it.opts[it.a] +
+    "</span><br>钩子：" + it.hook + "<br><span class='sub'>把钩子那句话读三遍，再点 ▶ 听一遍。</span>";
+  var el = document.getElementById("hkbox"); if (el) el.className = "hidden";
+  if (!replay){ var hk = document.querySelector(".hook"); if (hk) hk.className = "hidden"; }
+}
+
+/* ---------- 模块小结 ---------- */
+function moduleReport(){
+  document.getElementById("bar").style.width = "100%";
+  stopAudio();
+  var m = MODULES[state.mi], n = 0, right = 0, sumMs = 0, wrong = [];
+  for (var k=0;k<order.length;k++){
+    var r = state.log[order[k]];
+    if (!r) continue;
+    n++; sumMs += r.ms;
+    if (r.ok) right++; else wrong.push(order[k]);
+  }
+  var pct = n ? Math.round(right/n*100) : 0;
+  var old = state.best[m.id];
+  if (!old || pct >= old.pct) state.best[m.id] = {right:right, n:n, pct:pct};
+  state.lastWrong = wrong.slice();
+  save();
+
+  var h = strip();
+  h += "<div class='card anchor'><span class='tag'>本模块完成</span>" +
+       "<div class='big'>" + m.short + "　" + right + " / " + n + "（" + pct + "%）</div>" +
+       "<div class='sub'>本轮第 " + state.round + " 轮　｜　平均用时 " + (n?(sumMs/n/1000).toFixed(1):0) + " 秒" +
+       "　｜　历史最好 " + state.best[m.id].right + "/" + state.best[m.id].n + "（" + state.best[m.id].pct + "%）</div>" +
+       "<div class='sub'>" + (pct >= 90 ? "很稳了，可以进下一个模块。" : pct >= 70 ? "差不多，再来一轮会更稳。" : "先别急着往下——这个模块再做一轮。") + "</div></div>";
+
+  h += "<div class='card'><b>本轮逐题</b><table>";
+  h += "<tr><th>题号</th><th>你的选择</th><th>结果</th><th>用时</th></tr>";
+  for (var j=0;j<order.length;j++){
+    var qi = order[j], r2 = state.log[qi], it2 = ITEMS[qi];
+    if (!r2) continue;
+    h += "<tr><td>" + it2.g + it2.n + "</td><td class='en'>" + (r2.pick < 0 ? "（超时）" : it2.opts[r2.pick]) +
+         "</td><td>" + (r2.ok ? "✅" : "❌ 应为 " + it2.opts[it2.a]) + "</td><td>" + (r2.ms/1000).toFixed(1) + "s</td></tr>";
+  }
+  h += "</table></div>";
+
+  h += "<div class='card'><b>下一步</b>" +
+       "<div class='sub'>做得不满意就再来一轮（记录会清空，重新计时）；满意了再进下一个模块。</div>" +
+       "<div class='nav'><button class='primary' id='again'>▶ 本模块再来一次</button>" +
+       "<button class='primary' id='nextmod'>" + (state.mi < MODULES.length-1 ? "下一个模块（" + MODULES[state.mi+1].short + "）→" : "查看总成绩 →") + "</button>" +
+       "<button class='ghost' id='pick'>换模块</button></div></div>";
+  document.getElementById("app").innerHTML = h;
+  document.getElementById("again").onclick = function(){ startModuleRound(); };
+  document.getElementById("nextmod").onclick = function(){ nextModule(); };
+  document.getElementById("pick").onclick = function(){ intro(); };
+  toTop();
+}
+
+/* ---------- 全卷总结 ---------- */
+function finalSummary(){
+  document.getElementById("bar").style.width = "100%";
+  var totalPts = 0, totRight = 0, totN = 0, lines = [];
+  for (var i=0;i<MODULES.length;i++){
+    var m = MODULES[i], b = state.best[m.id];
+    var r = b ? b.right : 0, n = b ? b.n : 0;
+    var pts = n ? (r/n*m.pts) : 0;
+    totalPts += pts; totRight += r; totN += n;
+    lines.push({m:m, r:r, n:n, pts:pts});
+  }
+  var dn = document.getElementById("done");
+  dn.className = "";
+  var h = "<div class='card'><b>四个模块总结（按每模块最好成绩）</b><table>" +
+          "<tr><th>模块</th><th>最好成绩</th><th>折算分</th></tr>";
+  for (var k=0;k<lines.length;k++){
+    h += "<tr><td>" + lines[k].m.label + "</td><td>" + lines[k].r + " / " + lines[k].n + "</td><td>" +
+         lines[k].pts.toFixed(1) + " / " + lines[k].m.pts + "</td></tr>";
+  }
+  h += "<tr><td><b>客观题合计</b></td><td><b>" + totRight + " / " + totN + "</b></td><td><b>" + totalPts.toFixed(1) +
+       " / 50</b></td></tr></table>" +
+       "<div class='sub'>翻译 25 分 + 写作 25 分是主观题，要靠背成品（下一课的内容）。</div></div>";
+  h += "<div class='card'><b>下一步</b><div class='nav'>" +
+       "<button class='primary' id='restart'>从「听力A」重新开始</button>" +
+       "<button class='ghost' id='pick'>换模块</button></div></div>";
+  h += "<div class='card'><div class='sub'>把下面这段复制给我：</div><textarea id='payload' readonly></textarea></div>";
+  dn.innerHTML = h;
+  var txt = "【秒选训练场·模块版】";
+  for (var q=0;q<lines.length;q++) txt += lines[q].m.short + " " + lines[q].r + "/" + lines[q].n + "｜";
+  txt += "客观题折算 " + totalPts.toFixed(1) + "/50";
+  document.getElementById("payload").value = txt;
+  document.getElementById("payload").onclick = function(){ this.select(); };
+  document.getElementById("restart").onclick = function(){ state.mi = 0; save(); startModuleRound(); };
+  document.getElementById("pick").onclick = function(){ dn.className = "hidden"; intro(); };
+  toTop();
+}
+
+/* ---------- 说明 / 选模块 ---------- */
+function intro(){
+  document.getElementById("done").className = "hidden";
+  var h = strip();
+  h += "<div class='card anchor'><span class='tag'>怎么练（分模块版）</span><div>" +
+       "四个模块分开做，<b>一个模块满意了再进下一个</b>：<br>" +
+       "① 每题 <b>8 秒</b>（背死档），带「钩子」提示；② 做完一个模块出小结算；" +
+       "③ 不满意就点「▶ 本模块再来一次」，记录清空重新计时，练到你满意为止；④ 满意了点「下一个模块」。<br>" +
+       "⑤ 怕自己是在<b>背位置</b>（看到第 2 个就点）？点顶部「<b>选项乱序：关</b>」变成「选项乱序：开 ✅」——四个选项的位置每次随机打乱，" +
+       "但<b>字母仍然是考试原答案的字母</b>（比如第 4 题还是 B) 8:30），所以乱序练出来的答案，考试时照样能用。</div></div>";
+  h += "<div class='card'><b>选一个模块开始</b><table><tr><th>模块</th><th>题数/分值</th><th>最好成绩</th></tr>";
+  for (var i=0;i<MODULES.length;i++){
+    var m = MODULES[i], b = state.best[m.id];
+    h += "<tr><td>" + m.label + "</td><td>" + m.n + " 题 / " + m.pts + " 分</td><td>" + (b ? b.right + "/" + b.n + "（" + b.pct + "%）" : "—") + "</td></tr>";
+  }
+  h += "</table><div class='nav'>";
+  for (var j=0;j<MODULES.length;j++) h += "<button class='ghost' id='go" + j + "'>" + MODULES[j].short + "</button>";
+  h += "<button class='primary' id='goNow'>回到当前模块 →</button></div></div>";
+  document.getElementById("app").innerHTML = h;
+  for (var t=0;t<MODULES.length;t++){
+    (function(idx){ document.getElementById("go" + idx).onclick = function(){ gotoModule(idx); }; })(t);
+  }
+  document.getElementById("goNow").onclick = function(){ render(); };
+}
+
+load();
+startModuleRound();   // 打开就从当前模块第 1 题开始
+
+</script>
+</body>
+</html>
