@@ -74,6 +74,14 @@
   .diff{margin-top:8px;line-height:2.4}
   .diff .wok{background:#e6f7ec;color:#1a7f37;border-radius:4px;padding:2px 6px;margin-right:4px}
   .diff .wbad{background:#ffecec;color:#b42318;border-radius:4px;padding:2px 6px;margin-right:4px;text-decoration:line-through}
+  .blk{margin:8px 0;border:1px solid var(--border,#d0d7de);border-radius:8px;overflow:hidden}
+  .blkrow{display:flex;align-items:baseline;gap:8px;padding:9px 10px;border-top:1px solid var(--border,#d0d7de);flex-wrap:wrap}
+  .blkrow:first-child{border-top:0}
+  .blkrow .bn{flex:0 0 20px;height:20px;line-height:20px;text-align:center;border-radius:99px;background:var(--accent,#1f6feb);color:#fff;font-size:12px}
+  .blkrow .be{flex:1 1 auto;font-size:16.5px;font-weight:600}
+  .blkrow .bz{flex:0 0 44%;color:var(--muted-foreground,#57606a);font-size:13.5px;text-align:right}
+  .zhq.tiny{font-size:17px;font-weight:600;padding:8px 10px}
+  @media (max-width:620px){ .blkrow .bz{flex:1 1 100%;text-align:left} }
 </style>
 </head>
 <body>
@@ -120,42 +128,52 @@ var ITEMS = [
 {g:"翻译", n:"1", stemzh:"中国传统文化源远流长、博大精深。", full:"tf-1.mp3",
  en:"Chinese traditional culture has a long history and is extensive and profound.",
  chunks:["Chinese traditional culture","has a long history","and is extensive and profound."],
- hook:"源远流长＝has a long history；博大精深＝extensive and profound（本卷翻译两个必得分词组，直接背）"},
+ czh:["中国传统文化","源远流长（有很长的历史）","而且博大精深"],
+ hook:"源远流长＝has a long history；博大精深＝extensive and profound（这两个词组就是得分点，直接背）"},
 {g:"翻译", n:"2", stemzh:"阅读传统经典不仅能够丰富我们的知识、提升文化素养，", full:"tf-2.mp3",
  en:"Reading traditional classics can not only enrich our knowledge and improve our cultural literacy,",
  chunks:["Reading traditional classics","can not only","enrich our knowledge","and improve our cultural literacy,"],
+ czh:["阅读传统经典","不仅仅能","丰富我们的知识","并且提升我们的文化素养"],
  hook:"动名词 Reading… 开头作主语，后面用 can；not only 后接动词原形 enrich；丰富知识＝enrich our knowledge（不写 knowledge reserve）"},
 {g:"翻译", n:"3", stemzh:"还能帮助我们树立正确的人生观和价值观。", full:"tf-3.mp3",
  en:"but also help us establish a correct outlook on life and values.",
  chunks:["but also","help us establish","a correct outlook on life and values."],
+ czh:["而且还能","帮助我们树立","正确的人生观和价值观"],
  hook:"与上一句连成 not only … but also …；but also 后接动词原形 help；树立＝establish；三观固定说法 a correct outlook on life and values（outlook 单数）"},
 {g:"翻译", n:"4", stemzh:"在当今快速发展的时代，传承和弘扬优秀传统文化，是每个年轻人的责任与使命，", full:"tf-4.mp3",
  en:"In today's rapidly developing era, inheriting and promoting excellent traditional culture is the responsibility and mission of every young person,",
  chunks:["In today's rapidly developing era,","inheriting and promoting excellent traditional culture","is the responsibility and mission of every young person,"],
+ czh:["在当今快速发展的时代","传承和弘扬优秀传统文化","是每个年轻人的责任与使命"],
  hook:"时代＝era（不用 times）；传承和弘扬＝inherit and promote（动名词做主语用 inheriting and promoting）；责任与使命＝the responsibility and mission；every young person 用单数"},
 {g:"翻译", n:"5", stemzh:"也能让中华文化在世界舞台上焕发新的活力。", full:"tf-5.mp3",
  en:"and it can also enable Chinese culture to glow with new vitality on the world stage.",
  chunks:["and it can also enable Chinese culture","to glow with new vitality","on the world stage."],
+ czh:["而且它还能让中华文化","焕发新的活力","在世界舞台上"],
  hook:"让…焕发＝enable … to glow with new vitality（enable sb to do sth）；世界舞台＝on the world stage（介词用 on）"},
 {g:"写作", n:"1", stemzh:"【作文开头第一句】点题：坚持是成功最宝贵的品质之一", full:"wf-1.mp3",
  en:"Persistence is one of the most precious qualities of human beings and an indispensable foundation of success.",
  chunks:["Persistence is one of the most precious qualities of human beings","and an indispensable foundation of success."],
+ czh:["坚持是人类最宝贵的品质之一","也是成功不可或缺的基础"],
  hook:"开头万能句：X is one of the most ＋最高级＋复数名词＋of…；不可缺少的基础＝an indispensable foundation of success"},
 {g:"写作", n:"2", stemzh:"【第二段开头】举例子：许多例子都证明了坚持的力量", full:"wf-2.mp3",
  en:"Numerous examples have proved the power of persistence.",
  chunks:["Numerous examples have proved","the power of persistence."],
+ czh:["许多例子已经证明了","坚持的力量"],
  hook:"举例段万能开头：Numerous examples have proved …（Numerous 比 Many 高级；examples 复数＋have proved 现在完成）"},
 {g:"写作", n:"3", stemzh:"【第二段举例】以学生为例（举一类人）", full:"wf-3.mp3",
  en:"For students, persistent daily study helps us accumulate knowledge steadily and make progress gradually.",
  chunks:["For students,","persistent daily study helps us","accumulate knowledge steadily","and make progress gradually."],
+ czh:["对学生来说","坚持每天学习能帮我们","稳步积累知识","并且逐步进步"],
  hook:"For ＋某类人, … helps us …（主语 persistent daily study 是三单→helps）；稳步积累＝accumulate knowledge steadily；逐步进步＝make progress gradually"},
 {g:"写作", n:"4", stemzh:"【第三段第一条建议】如何培养坚持的品质", full:"wf-4.mp3",
  en:"First, we need to set clear short-term and long-term goals to guide our actions.",
  chunks:["First, we need to set clear short-term and long-term goals","to guide our actions."],
+ czh:["第一，我们需要设定明确的短期和长期目标","来指导我们的行动"],
  hook:"建议句万能开头：First, we need to ＋动词原形；短期/长期目标＝short-term and long-term goals；指导行动＝guide our actions"},
 {g:"写作", n:"5", stemzh:"【结尾点睛句】只有坚持才能实现梦想（高分倒装）", full:"wf-5.mp3",
  en:"Only by persisting continuously can we realize our dreams and embrace a better future.",
  chunks:["Only by persisting continuously","can we realize our dreams","and embrace a better future."],
+ czh:["只有坚持不懈","我们才能实现梦想","并且拥抱更美好的未来"],
  hook:"结尾加分句：Only by ＋动名词 … can we …（Only 置于句首要部分倒装，背下来直接往作文里放）"}
 ];
 
@@ -231,7 +249,18 @@ function writeCheck(input, target){
   return { ok:(wrong === 0 && extra === 0), wrong:wrong + extra, total:b.length, marks:marks };
 }
 function subjReset(qi, it){
-  if (W.qi !== qi){ W.qi = qi; W.step = 0; W.picked = []; W.pool = shuffleIdx(it.chunks.length); }
+  if (W.qi !== qi){
+    W.qi = qi; W.step = 0; W.picked = []; W.pool = shuffleIdx(it.chunks.length);
+    W.ci = 0; W.bdone = []; W.challenge = false;
+  }
+}
+function blocksTable(it){
+  var h = "<div class='blk'>";
+  for (var b=0;b<it.chunks.length;b++){
+    h += "<div class='blkrow'><span class='bn'>" + (b+1) + "</span><span class='be'>" + it.chunks[b] +
+         "</span><span class='bz'>" + ((it.czh && it.czh[b]) ? it.czh[b] : "") + "</span></div>";
+  }
+  return h + "</div>";
 }
 
 function subjBody(it, qi){
@@ -239,9 +268,9 @@ function subjBody(it, qi){
   var h = "<div class='card'><span class='tag'>" + it.g + " 第 " + it.n + " 题" + (W.mode === "paper" ? "　·　纸笔默写（自评）" : "") + "</span>";
   h += "<div class='zhq'>" + it.stemzh + "</div>";
   if (W.step === 0){
-    h += "<div class='sub'>第一步 <b>背</b>：看着英文听 2 遍，再出声跟读 2 遍</div>";
-    h += "<div class='stem en'>" + it.en + "</div>";
-    h += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听这句（标准音）</button></div>";
+    h += "<div class='sub'>第一步 <b>背</b>：这句其实只有 <b>" + it.chunks.length + " 块</b>，不要当成十几个单词去背。看完下面这张对照表，听 2 遍、跟读 2 遍。</div>";
+    h += blocksTable(it);
+    h += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句（标准音）</button></div>";
     h += "<div class='nav'><button class='primary' id='w1'>我记住了 → 开始拼句</button></div>";
   } else if (W.step === 1){
     h += "<div class='sub'>第二步 <b>拼句</b>：按正确顺序点下面的词块（点上面的词块可以撤销）</div>";
@@ -255,16 +284,31 @@ function subjBody(it, qi){
     h += "<div class='nav'><button class='primary' id='w2'" + (W.picked.length === it.chunks.length ? "" : " disabled") + ">检查拼句</button>" +
          "<button class='ghost' id='wback'>← 回去再背一遍</button></div>";
   } else {
+    var nb = it.chunks.length;
     if (W.mode === "paper"){
-      h += "<div class='sub'>第三步 <b>默写（纸笔）</b>：拿笔在纸上把整句英文写出来，写完再对答案、自己判</div>";
+      h += "<div class='sub'>第三步 <b>默写（纸笔）</b>：看着上面的中文，在纸上把整句英文写出来，写完再对答案、自己判</div>";
       h += "<div class='nav'><button class='primary' id='wshow'>写好了，看答案 →</button></div>";
       h += "<div id='wdone'></div>";
-    } else {
-      h += "<div class='sub'>第三步 <b>默写</b>：上面的英文不看了，把整句写出来（标点、大小写不计较）</div>";
-      h += "<textarea id='win' class='win' autocapitalize='off' autocorrect='off' autocomplete='off' spellcheck='false' placeholder='在这里把整句英文默写出来…'></textarea>";
+    } else if (W.challenge){
+      h += "<div class='sub'>整句连写（挑战）：把整句写出来，看你能不能一遍过</div>";
+      h += "<textarea id='win' class='win' autocapitalize='off' autocorrect='off' autocomplete='off' spellcheck='false' placeholder='把整句英文写出来…'></textarea>";
+      h += "<div class='nav'><button class='ghost' id='whint'>给我首字母提示</button><button class='primary' id='wsub2'>提交整句</button></div>";
+      h += "<div id='wdone'></div>";
+    } else if (W.ci < nb){
+      h += "<div class='sub'>第三步 <b>分块默写</b>：第 <b>" + (W.ci+1) + " / " + nb + " 块</b>　——　看着中文，只把<b>这一块</b>的英文写出来（标点、大小写不计较）</div>";
+      h += "<div class='zhq tiny'>" + ((it.czh && it.czh[W.ci]) ? it.czh[W.ci] : it.en) + "</div>";
+      h += "<div class='sub'>这一块大约 " + words(it.chunks[W.ci]).length + " 个词，写完点下面的按钮</div>";
+      h += "<textarea id='win' class='win' autocapitalize='off' autocorrect='off' autocomplete='off' spellcheck='false' placeholder='只写这一块的英文…'></textarea>";
       h += "<div class='nav'><button class='ghost' id='whint'>给我首字母提示</button>" +
-           "<button class='primary' id='wsub'>提交，对答案</button>" +
+           "<button class='primary' id='wsub'>提交这一块</button>" +
            "<button class='ghost' id='wpaper'>改成纸笔默写（自评）</button></div>";
+      h += "<div id='wdone'></div>";
+    } else {
+      h += "<div class='fb good show'><b>" + nb + " 块全部写对了 ✅</b> 这题算你过了。</div>";
+      h += blocksTable(it);
+      h += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句（标准音）</button></div>";
+      h += "<div class='nav'><button class='primary' id='wfull'>挑战整句连写（可选）</button>" +
+           "<button class='primary' id='wnext'>下一题 →</button></div>";
       h += "<div id='wdone'></div>";
     }
   }
@@ -281,16 +325,37 @@ function bindSubj(it, qi){
   if (e = document.getElementById("wshow")) e.onclick = function(){ showWriteResult(it, qi, null, ""); };
   if (e = document.getElementById("whint")) e.onclick = function(){
     var t = document.getElementById("win"); if (!t) return;
-    t.value = words(it.en).map(function(w){ return w.charAt(0) + "…"; }).join(" ");
+    var target = W.challenge ? it.en : (it.chunks[W.ci] || it.en);
+    t.value = words(target).map(function(w){ return w.charAt(0) + "…"; }).join(" ");
     t.focus();
   };
   if (e = document.getElementById("wsub")) e.onclick = function(){
     var t = document.getElementById("win"); var val = t ? (t.value || "") : "";
+    var k = W.ci, target = it.chunks[k];
+    var r = writeCheck(val, target);
+    W.bdone[k] = r;
+    if (r.ok){
+      W.ci++;
+      var all = (W.ci >= it.chunks.length);
+      if (all){ state.log[qi] = {pick:-1, ok:true, ms:0, write:true, ratio:100, blocks:true}; save(); }
+      render();
+      showBlockResult(it, qi, r, val, k, all);
+    } else {
+      W.bdone[k] = r;
+      state.log[qi] = {pick:-1, ok:false, ms:0, write:true, ratio:r.ratio, blocks:false, typed:val};
+      save();
+      showBlockResult(it, qi, r, val, k, false);
+    }
+  };
+  if (e = document.getElementById("wsub2")) e.onclick = function(){
+    var t = document.getElementById("win"); var val = t ? (t.value || "") : "";
     var r = writeCheck(val, it.en);
-    state.log[qi] = {pick:-1, ok:r.ok, ms:0, write:true, ratio:r.ratio, typed:val};
-    save();
+    var rec = state.log[qi] || {pick:-1, ok:true, ms:0, write:true, ratio:100, blocks:true};
+    rec.fullOk = r.ok; state.log[qi] = rec; save();
     showWriteResult(it, qi, r, val);
   };
+  if (e = document.getElementById("wfull")) e.onclick = function(){ W.challenge = true; render(); };
+  if (e = document.getElementById("wnext")) e.onclick = function(){ cur++; render(); toTop(); };
   var lfs = document.querySelectorAll(".lf");
   for (var i=0;i<lfs.length;i++) lfs[i].onclick = function(){ W.picked.push(parseInt(this.getAttribute("data-pk"), 10)); render(); };
   var pks = document.querySelectorAll(".pk");
@@ -341,6 +406,22 @@ function showWriteResult(it, qi, r, typed){
     state.log[qi] = {pick:-1, ok:false, ms:0, write:true, paper:true, ratio:0};
     save(); showWriteResult(it, qi, null, "（纸笔默写，自评：有错）");
   };
+}
+
+function showBlockResult(it, qi, r, typed, k, all){
+  var d = document.getElementById("wdone"); if (!d) return;
+  var m = "";
+  for (var i=0;i<r.marks.length;i++) m += "<span class='" + (r.marks[i].ok ? "wok" : "wbad") + "'>" + r.marks[i].t + "</span> ";
+  var html = "<div class='fb " + (r.ok ? "good" : "bad") + " show'>" +
+    (r.ok ? ("<b>这一块对了 ✅</b> " + (all ? "（最后一块，整题过了！）" : "接着默下一块。"))
+          : ("<b>差 " + r.wrong + " 个词</b>　再写一遍，看下面正确的写法。")) +
+    "<br>你写的：<span class='sub'>" + (typed ? String(typed).replace(/</g, "&lt;") : "（空白）") + "</span>" +
+    "<div class='diff'>" + m + "</div></div>" +
+    "<div class='blk'><div class='blkrow'><span class='bn'>" + (k+1) + "</span><span class='be'>" + it.chunks[k] +
+    "</span><span class='bz'>" + ((it.czh && it.czh[k]) ? it.czh[k] : "") + "</span></div></div>" +
+    "<div class='hook'><b>钩子：</b>" + it.hook + "</div>";
+  d.innerHTML = html;
+  d.className = "";
 }
 
 /* ---------- 顶部模块条 ---------- */
@@ -571,8 +652,8 @@ function intro(){
        "六个模块分开做，<b>一个模块满意了再进下一个</b>：<br>" +
        "① 每题 <b>8 秒</b>（背死档），带「钩子」提示；② 做完一个模块出小结算；" +
        "③ 不满意就点「▶ 本模块再来一次」，记录清空重新计时，练到你满意为止；④ 满意了点「下一个模块」。<br>" +
-       "⑤ <b>翻译</b>和<b>写作</b>是主观题（各 25 分）：<b>看着中文，选出对应的英文成品句</b>——" +
-       "这两块的英文句子是<b>要能默写出来</b>的，所以每次答完都点「▶ 听这句完整英文（慢速）」跟读一遍。<br>" +
+       "⑤ <b>翻译</b>和<b>写作</b>是主观题（各 25 分）：每题走三步 —— <b>① 看「分块对照表」先背</b>（一句其实只有 2-4 块）→ <b>② 按顺序拼词块</b> → <b>③ 分块默写</b>（一次只默一块，约 3 个词）。三块都写对才算这题过；想加练可点「挑战整句连写」。" +
+       "手机打字累，就点顶部「<b>默写方式</b>」切成「<b>纸笔自评</b>」：在纸上写，再自己判。<br>" +
        "⑥ 怕自己是在<b>背位置</b>（看到第 2 个就点）？点顶部「<b>选项乱序：关</b>」变成「选项乱序：开 ✅」——四个选项的位置每次随机打乱，" +
        "但<b>字母仍然是考试原答案的字母</b>（比如第 4 题还是 B) 8:30），所以乱序练出来的答案，考试时照样能用。</div></div>";
   h += "<div class='card'><b>选一个模块开始</b><table><tr><th>模块</th><th>题数/分值</th><th>最好成绩</th></tr>";
