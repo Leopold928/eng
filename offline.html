@@ -279,9 +279,11 @@ function subjBody(it, qi){
       h += "<div class='nav'><button class='primary' id='wshow'>写好了，看答案 →</button></div>";
       h += "<div id='wdone'></div>";
     } else if (W.challenge){
-      h += "<div class='sub'>整句连写（挑战）：把整句写出来，看你能不能一遍过</div>";
-      h += "<textarea id='win' class='win' autocapitalize='off' autocorrect='off' autocomplete='off' spellcheck='false' placeholder='把整句英文写出来…'></textarea>";
-      h += "<div class='nav'><button class='ghost' id='whint'>给我首字母提示</button><button class='primary' id='wsub2'>提交整句</button></div>";
+      h += "<div class='fb good show'><b>" + nb + " 块都过了 ✅</b> 最后一步（必做）：把<b>整句完整写出来</b>——考试就是这么交的。</div>";
+      h += "<div class='zhq'>" + it.stemzh + "</div>";
+      h += "<textarea id='win' class='win' autocapitalize='off' autocorrect='off' autocomplete='off' spellcheck='false' placeholder='不看上面，把整句英文完整写出来…'></textarea>";
+      h += "<div class='nav'><button class='ghost' id='whint'>给我首字母提示</button><button class='primary' id='wsub2'>提交整句</button>" +
+           "<button class='ghost' id='wpaper'>改成纸笔默写（自评）</button></div>";
       h += "<div id='wdone'></div>";
     } else if (W.ci < nb){
       h += "<div class='sub'>第三步 <b>分块默写</b>：第 <b>" + (W.ci+1) + " / " + nb + " 块</b>　——　看着中文，只把<b>这一块</b>的英文写出来（标点、大小写不计较）</div>";
@@ -326,7 +328,11 @@ function bindSubj(it, qi){
     if (r.ok){
       W.ci++;
       var all = (W.ci >= it.chunks.length);
-      if (all){ state.log[qi] = {pick:-1, ok:true, ms:0, write:true, ratio:100, blocks:true}; save(); }
+      if (all){
+        W.challenge = true;      /* 三块过了 → 必做的最后一步：整句完整默写 */
+        state.log[qi] = {pick:-1, ok:false, ms:0, write:true, ratio:100, blocks:true, pendingFull:true};
+        save();
+      }
       render();
       showBlockResult(it, qi, r, val, k, all);
     } else {
@@ -340,7 +346,8 @@ function bindSubj(it, qi){
     var t = document.getElementById("win"); var val = t ? (t.value || "") : "";
     var r = writeCheck(val, it.en);
     var rec = state.log[qi] || {pick:-1, ok:true, ms:0, write:true, ratio:100, blocks:true};
-    rec.fullOk = r.ok; state.log[qi] = rec; save();
+    rec.fullOk = r.ok; rec.ok = r.ok; rec.ratio = r.ok ? 100 : r.ratio; rec.pendingFull = false;
+    state.log[qi] = rec; save();
     showWriteResult(it, qi, r, val);
   };
   if (e = document.getElementById("wfull")) e.onclick = function(){ W.challenge = true; render(); };
@@ -402,7 +409,7 @@ function showBlockResult(it, qi, r, typed, k, all){
   var m = "";
   for (var i=0;i<r.marks.length;i++) m += "<span class='" + (r.marks[i].ok ? "wok" : "wbad") + "'>" + r.marks[i].t + "</span> ";
   var html = "<div class='fb " + (r.ok ? "good" : "bad") + " show'>" +
-    (r.ok ? ("<b>这一块对了 ✅</b> " + (all ? "（最后一块，整题过了！）" : "接着默下一块。"))
+    (r.ok ? ("<b>这一块对了 ✅</b> " + (all ? "（三块都过了，接着把整句完整写出来）" : "接着默下一块。"))
           : ("<b>差 " + r.wrong + " 个词</b>　再写一遍，看下面正确的写法。")) +
     "<br>你写的：<span class='sub'>" + (typed ? String(typed).replace(/</g, "&lt;") : "（空白）") + "</span>" +
     "<div class='diff'>" + m + "</div></div>" +
@@ -641,8 +648,9 @@ function intro(){
        "六个模块分开做，<b>一个模块满意了再进下一个</b>：<br>" +
        "① 每题 <b>8 秒</b>（背死档），带「钩子」提示；② 做完一个模块出小结算；" +
        "③ 不满意就点「▶ 本模块再来一次」，记录清空重新计时，练到你满意为止；④ 满意了点「下一个模块」。<br>" +
-       "⑤ <b>翻译</b>和<b>写作</b>是主观题（各 25 分）：每题走三步 —— <b>① 看「分块对照表」先背</b>（一句其实只有 2-4 块）→ <b>② 按顺序拼词块</b> → <b>③ 分块默写</b>（一次只默一块，约 3 个词）。三块都写对才算这题过；想加练可点「挑战整句连写」。" +
-       "手机打字累，就点顶部「<b>默写方式</b>」切成「<b>纸笔自评</b>」：在纸上写，再自己判。<br>" +
+       "⑤ <b>翻译</b>和<b>写作</b>是主观题（各 25 分）：每题走三步 —— <b>① 看「分块对照表」先背</b>（一句其实只有 2-4 块）→ <b>② 按顺序拼词块</b> → <b>③ 分块默写</b>（一次只默一块，练手感）。" +
+       "三块都写对之后还有<b>最后一步（必做）：整句完整默写</b>——<b>只有整句完整写对，这题才算过</b>（因为考试是按整句给分的，只写词块会丢分）。" +
+       "手机打字累，就点顶部「<b>默写方式</b>」切成「<b>纸笔自评</b>」：整句写在纸上，再自己判。<br>" +
        "⑥ 怕自己是在<b>背位置</b>（看到第 2 个就点）？点顶部「<b>选项乱序：关</b>」变成「选项乱序：开 ✅」——四个选项的位置每次随机打乱，" +
        "但<b>字母仍然是考试原答案的字母</b>（比如第 4 题还是 B) 8:30），所以乱序练出来的答案，考试时照样能用。</div></div>";
   h += "<div class='card'><b>选一个模块开始</b><table><tr><th>模块</th><th>题数/分值</th><th>最好成绩</th></tr>";
