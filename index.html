@@ -277,7 +277,7 @@ function writeCheck(input, target){
 function subjReset(qi, it){
   if (W.qi !== qi){
     W.qi = qi; W.step = 0; W.picked = []; W.pool = shuffleIdx(it.chunks.length);
-    W.ci = 0; W.bdone = []; W.challenge = false;
+    W.ci = 0; W.bdone = []; W.challenge = false; W.judged = null;
   }
 }
 function blocksTable(it, qi){
@@ -428,20 +428,30 @@ function showWriteResult(it, qi, r, typed){
           "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听这句完整英文（慢速）</button></div>" +
           "<div class='hook'><b>钩子：</b>" + it.hook + "</div>";
   if (W.mode === "paper"){
-    html += "<div class='sub'>对着上面自己判：整句都写对了就算 ✅</div>" +
-            "<div class='nav'><button class='primary' id='wok'>✅ 我写对了（全对）</button><button class='ghost' id='wno'>❌ 有错，再来一遍</button></div>";
+    if (W.judged === null || W.judged === undefined){
+      html += "<div class='sub'>对着上面自己判：整句都写对了就算 ✅</div>" +
+              "<div class='nav'><button class='primary' id='wok'>✅ 我写对了（全对）</button>" +
+              "<button class='ghost' id='wno'>❌ 有错，再来一遍</button></div>";
+    } else {
+      html += "<div class='fb " + (W.judged ? "good" : "bad") + " show'><b>" + (W.judged ? "已记：这句写对了 ✅" : "已记：这句有错 ✗") + "</b> " +
+              (W.judged ? "这题算你过了（考场上记得写对哈）。" : "正确答案就在上面，抄两遍，回头再默一次。") + "</div>" +
+              "<div class='nav'><button class='primary' id='wnext'>下一题 →</button>" +
+              "<button class='ghost' id='wretry'>再默一次</button></div>";
+    }
   } else {
     html += "<div class='nav'><button class='primary' id='wnext'>下一题 →</button><button class='ghost' id='wretry'>再默一次</button></div>";
   }
   d.innerHTML = html;
   d.className = "";
-  var n1 = document.getElementById("wnext"); if (n1) n1.onclick = function(){ cur++; render(); toTop(); };
-  var rt = document.getElementById("wretry"); if (rt) rt.onclick = function(){ if (state.log[qi]) delete state.log[qi]; save(); render(); toTop(); };
+  var n1 = document.getElementById("wnext"); if (n1) n1.onclick = function(){ W.judged = null; cur++; render(); toTop(); };
+  var rt = document.getElementById("wretry"); if (rt) rt.onclick = function(){ W.judged = null; if (state.log[qi]) delete state.log[qi]; save(); render(); toTop(); };
   var ok1 = document.getElementById("wok"); if (ok1) ok1.onclick = function(){
+    W.judged = true;
     state.log[qi] = {pick:-1, ok:true, ms:0, write:true, paper:true, ratio:100};
     save(); showWriteResult(it, qi, null, "（纸笔默写，自评：全对）");
   };
   var no1 = document.getElementById("wno"); if (no1) no1.onclick = function(){
+    W.judged = false;
     state.log[qi] = {pick:-1, ok:false, ms:0, write:true, paper:true, ratio:0};
     save(); showWriteResult(it, qi, null, "（纸笔默写，自评：有错）");
   };
