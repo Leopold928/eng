@@ -193,6 +193,32 @@ var MODULES = [
 ];
 var KEYS = ["听力A","听力B","阅读","选词"];   // 客观题 50 分
 var SUBJ = ["翻译","写作"];                    // 主观题 50 分
+
+/* ============ 作文范文全文（考试就这一篇，整篇背下来） ============ */
+var ESSAY = {
+  title: "The Importance of Persistence",
+  audio: "wfull.mp3",
+  paras: [
+    {audio:"wp-1.mp3",
+     zh:"第一段（点题）：坚持是人类最宝贵的品质之一，也是成功不可或缺的基础。没有人能轻易实现伟大的目标，所有杰出成就都伴随着长期坚持和不懈努力。",
+     sents:["Persistence is one of the most precious qualities of human beings and an indispensable foundation of success.",
+            "No one can achieve great goals easily, and all outstanding achievements are accompanied by long-term persistence and unremitting efforts."]},
+    {audio:"wp-2.mp3",
+     zh:"第二段（举例）：许多例子证明了坚持的力量。对学生来说，坚持每天学习能帮我们稳步积累知识、逐步进步；对科学家来说，数十年的坚持研究让他们在科学领域取得突破。很多人失败不是因为缺少能力，而是因为半途而废。",
+     sents:["Numerous examples have proved the power of persistence.",
+            "For students, persistent daily study helps us accumulate knowledge steadily and make progress gradually.",
+            "For scientists, decades of persistent research enables them to make breakthroughs in scientific fields.",
+            "Many people fail not because they lack ability, but because they give up halfway."]},
+    {audio:"wp-3.mp3",
+     zh:"第三段（结论+建议）：作为大学生，我们应该培养坚持的品质。第一，设定明确的短期和长期目标来指导我们的行动；第二，坚持每天的计划，遇到困难绝不轻易放弃。总之，只有坚持不懈，我们才能实现梦想、拥抱更美好的未来。",
+     sents:["As college students, we should cultivate the quality of persistence.",
+            "First, we need to set clear short-term and long-term goals to guide our actions.",
+            "Second, we should stick to daily plans and never give up easily when facing difficulties.",
+            "In short, only by persisting continuously can we realize our dreams and embrace a better future."]}
+  ]
+};
+var E = { on:false, pi:0, results:[], paper:false };
+function essayWords(){ return ESSAY.paras.reduce(function(a,p){ return a + p.sents.join(" ").split(" ").length; }, 0); }
 var OK_LETTER = {0:"A",1:"B",2:"C",3:"D"};
 
 var state = { mode:"hook", shuffle:false, mi:0, round:0, log:{}, best:{} };
@@ -254,10 +280,12 @@ function subjReset(qi, it){
     W.ci = 0; W.bdone = []; W.challenge = false;
   }
 }
-function blocksTable(it){
+function blocksTable(it, qi){
   var h = "<div class='blk'>";
   for (var b=0;b<it.chunks.length;b++){
-    h += "<div class='blkrow'><span class='bn'>" + (b+1) + "</span><span class='be'>" + it.chunks[b] +
+    h += "<div class='blkrow'><span class='bn'>" + (b+1) + "</span>" +
+         "<button class='play' data-a='ck-" + qi + "-" + b + ".mp3' data-t=\"" + it.chunks[b] + "\" title='听这一块'>▶</button>" +
+         "<span class='be'>" + it.chunks[b] +
          "</span><span class='bz'>" + ((it.czh && it.czh[b]) ? it.czh[b] : "") + "</span></div>";
   }
   return h + "</div>";
@@ -268,12 +296,13 @@ function subjBody(it, qi){
   var h = "<div class='card'><span class='tag'>" + it.g + " 第 " + it.n + " 题" + (W.mode === "paper" ? "　·　纸笔默写（自评）" : "") + "</span>";
   h += "<div class='zhq'>" + it.stemzh + "</div>";
   if (W.step === 0){
-    h += "<div class='sub'>第一步 <b>背</b>：这句其实只有 <b>" + it.chunks.length + " 块</b>，不要当成十几个单词去背。看完下面这张对照表，听 2 遍、跟读 2 遍。</div>";
-    h += blocksTable(it);
+    h += "<div class='sub'>第一步 <b>背</b>：这句其实只有 <b>" + it.chunks.length + " 块</b>，不要当成十几个单词去背。每一块都能点 ▶ 单独听，听 2 遍、跟读 2 遍。</div>";
+    h += blocksTable(it, qi);
     h += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句（标准音）</button></div>";
     h += "<div class='nav'><button class='primary' id='w1'>我记住了 → 开始拼句</button></div>";
   } else if (W.step === 1){
     h += "<div class='sub'>第二步 <b>拼句</b>：按正确顺序点下面的词块（点上面的词块可以撤销）</div>";
+    h += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句（忘了就听一遍）</button></div>";
     var picks = "";
     for (var i=0;i<W.picked.length;i++) picks += "<button class='opt pk' data-un='" + W.picked[i] + "'>" + it.chunks[W.picked[i]] + "</button>";
     h += "<div class='pickbox'>" + (picks || "<span class='sub'>（从这里开始，按顺序点下面的词块）</span>") + "</div>";
@@ -292,6 +321,7 @@ function subjBody(it, qi){
     } else if (W.challenge){
       h += "<div class='fb good show'><b>" + nb + " 块都过了 ✅</b> 最后一步（必做）：把<b>整句完整写出来</b>——考试就是这么交的。</div>";
       h += "<div class='zhq'>" + it.stemzh + "</div>";
+      h += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句（卡住了再点）</button></div>";
       h += "<textarea id='win' class='win' autocapitalize='off' autocorrect='off' autocomplete='off' spellcheck='false' placeholder='不看上面，把整句英文完整写出来…'></textarea>";
       h += "<div class='nav'><button class='ghost' id='whint'>给我首字母提示</button><button class='primary' id='wsub2'>提交整句</button>" +
            "<button class='ghost' id='wpaper'>改成纸笔默写（自评）</button></div>";
@@ -299,6 +329,8 @@ function subjBody(it, qi){
     } else if (W.ci < nb){
       h += "<div class='sub'>第三步 <b>分块默写</b>：第 <b>" + (W.ci+1) + " / " + nb + " 块</b>　——　看着中文，只把<b>这一块</b>的英文写出来（标点、大小写不计较）</div>";
       h += "<div class='zhq tiny'>" + ((it.czh && it.czh[W.ci]) ? it.czh[W.ci] : it.en) + "</div>";
+      h += "<div class='playbar'><button data-a='ck-" + qi + "-" + W.ci + ".mp3' data-t=\"" + it.chunks[W.ci] + "\">▶ 听这一块</button>" +
+           "<button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句</button></div>";
       h += "<div class='sub'>这一块大约 " + words(it.chunks[W.ci]).length + " 个词，写完点下面的按钮</div>";
       h += "<textarea id='win' class='win' autocapitalize='off' autocorrect='off' autocomplete='off' spellcheck='false' placeholder='只写这一块的英文…'></textarea>";
       h += "<div class='nav'><button class='ghost' id='whint'>给我首字母提示</button>" +
@@ -307,7 +339,7 @@ function subjBody(it, qi){
       h += "<div id='wdone'></div>";
     } else {
       h += "<div class='fb good show'><b>" + nb + " 块全部写对了 ✅</b> 这题算你过了。</div>";
-      h += blocksTable(it);
+      h += blocksTable(it, qi);
       h += "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句（标准音）</button></div>";
       h += "<div class='nav'><button class='primary' id='wfull'>挑战整句连写（可选）</button>" +
            "<button class='primary' id='wnext'>下一题 →</button></div>";
@@ -424,8 +456,11 @@ function showBlockResult(it, qi, r, typed, k, all){
           : ("<b>差 " + r.wrong + " 个词</b>　再写一遍，看下面正确的写法。")) +
     "<br>你写的：<span class='sub'>" + (typed ? String(typed).replace(/</g, "&lt;") : "（空白）") + "</span>" +
     "<div class='diff'>" + m + "</div></div>" +
-    "<div class='blk'><div class='blkrow'><span class='bn'>" + (k+1) + "</span><span class='be'>" + it.chunks[k] +
-    "</span><span class='bz'>" + ((it.czh && it.czh[k]) ? it.czh[k] : "") + "</span></div></div>" +
+    "<div class='blk'><div class='blkrow'><span class='bn'>" + (k+1) + "</span>" +
+      "<button class='play' data-a='ck-" + qi + "-" + k + ".mp3' data-t=\"" + it.chunks[k] + "\">▶</button>" +
+      "<span class='be'>" + it.chunks[k] +
+      "</span><span class='bz'>" + ((it.czh && it.czh[k]) ? it.czh[k] : "") + "</span></div></div>" +
+    "<div class='playbar'><button data-a='" + it.full + "' data-t=\"" + it.en + "\">▶ 听整句</button></div>" +
     "<div class='hook'><b>钩子：</b>" + it.hook + "</div>";
   d.innerHTML = html;
   d.className = "";
