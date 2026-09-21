@@ -130,16 +130,16 @@ var ITEMS = [
  chunks:["Chinese traditional culture","has a long history","and is extensive and profound."],
  czh:["中国传统文化","源远流长（有很长的历史）","而且博大精深"],
  hook:"源远流长＝has a long history；博大精深＝extensive and profound（这两个词组就是得分点，直接背）"},
-{g:"翻译", n:"2", stemzh:"阅读传统经典不仅能够丰富我们的知识、提升文化素养，", full:"tf-2.mp3",
- en:"Reading traditional classics can not only enrich our knowledge and improve our cultural literacy,",
- chunks:["Reading traditional classics","can not only","enrich our knowledge","and improve our cultural literacy,"],
- czh:["阅读传统经典","不仅仅能","丰富我们的知识","并且提升我们的文化素养"],
- hook:"动名词 Reading… 开头作主语，后面用 can；not only 后接动词原形 enrich；丰富知识＝enrich our knowledge（不写 knowledge reserve）"},
+{g:"翻译", n:"2", stemzh:"阅读传统经典不仅能够丰富我们的知识储备、提升文化素养，", full:"tf-2.mp3",
+ en:"Reading traditional classics can not only enrich our knowledge reserve and improve our cultural literacy,",
+ chunks:["Reading traditional classics","can not only","enrich our knowledge reserve","and improve our cultural literacy,"],
+ czh:["阅读传统经典","不仅仅能","丰富我们的知识储备","并且提升我们的文化素养"],
+ hook:"动名词 Reading… 开头作主语，后面用 can；not only 后接动词原形 enrich；丰富知识储备＝enrich our knowledge reserve（reserve 不能漏！漏了就是漏译扣分）"},
 {g:"翻译", n:"3", stemzh:"还能帮助我们树立正确的人生观和价值观。", full:"tf-3.mp3",
- en:"but also help us establish a correct outlook on life and values.",
- chunks:["but also","help us establish","a correct outlook on life and values."],
+ en:"but also help us establish correct outlooks on life and values.",
+ chunks:["but also","help us establish","correct outlooks on life and values."],
  czh:["而且还能","帮助我们树立","正确的人生观和价值观"],
- hook:"与上一句连成 not only … but also …；but also 后接动词原形 help；树立＝establish；三观固定说法 a correct outlook on life and values（outlook 单数）"},
+ hook:"与上一句连成 not only … but also …；but also 后接动词原形 help；树立＝establish；三观固定说法 correct outlooks on life and values（outlooks 用复数、前面不加 a）"},
 {g:"翻译", n:"4", stemzh:"在当今快速发展的时代，传承和弘扬优秀传统文化，是每个年轻人的责任与使命，", full:"tf-4.mp3",
  en:"In today's rapidly developing era, inheriting and promoting excellent traditional culture is the responsibility and mission of every young person,",
  chunks:["In today's rapidly developing era,","inheriting and promoting excellent traditional culture","is the responsibility and mission of every young person,"],
@@ -178,8 +178,7 @@ var ITEMS = [
 ];
 
 
-var A_BASE = "https://cdn.jsdelivr.net/gh/Leopold928/eng@main/eng-audio/";
-var KEY = "eng-drill-modules-v1-web";
+var KEY = "eng-drill-modules-v1";
 var WID = "sd";
 
 /* ============ 四个模块 ============ */
@@ -233,7 +232,7 @@ function hasEng(s){ return /[A-Za-z]{2}/.test(String(s).replace(/<[^>]*>/g, " ")
 var curA = null;
 function speak(txt){ try{ if(!txt) return; var u=new SpeechSynthesisUtterance(txt); u.lang="en-GB"; u.rate=0.8; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){} }
 function stopAudio(){ try{ if(curA) curA.pause(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} }
-function playFile(f, txt){ stopAudio(); try{ curA = new Audio(A_BASE+f); var used=false; curA.onerror=function(){ if(!used){used=true; speak(txt);} }; curA.play().catch(function(){ if(!used){used=true; speak(txt);} }); }catch(e){ speak(txt); } }
+function playFile(f, txt){ stopAudio(); try{ curA = new Audio("eng-audio/"+f); var used=false; curA.onerror=function(){ if(!used){used=true; speak(txt);} }; curA.play().catch(function(){ if(!used){used=true; speak(txt);} }); }catch(e){ speak(txt); } }
 document.addEventListener("click", function(ev){
   var el = ev.target && ev.target.closest ? ev.target.closest("[data-a]") : null;
   if (!el) return;
